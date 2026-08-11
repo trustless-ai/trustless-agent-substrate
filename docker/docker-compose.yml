@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # NATS JetStream for messaging
+  nats:
+    image: nats:latest
+    ports:
+      - "4222:4222"
+      - "8222:8222"  # Monitoring
+    command:
+      - "-js"
+      - "-m=8222"
+    volumes:
+      - nats-data:/data
+    networks:
+      - tas-network
+
+  # TAS Server
+  tas:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8080:8080"
+      - "9090:9090"  # Metrics
+    depends_on:
+      - nats
+    environment:
+      - TAS_CONFIG=/config/local.yaml
+    volumes:
+      - ../config:/config:ro
+      - tas-data:/data
+    networks:
+      - tas-network
+
+volumes:
+  nats-data:
+  tas-data:
+
+networks:
+  tas-network:
+    driver: bridge

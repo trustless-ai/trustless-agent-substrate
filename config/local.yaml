@@ -1,0 +1,51 @@
+# TAS Local Development Configuration
+
+server:
+  host: "localhost"
+  port: 8080
+
+messaging:
+  nats:
+    url: "nats://localhost:4222"
+    stream:
+      name: "TAS_MESSAGES_LOCAL"
+      storage: "memory"
+      max_age: "24h"
+
+chain:
+  networks:
+    - chain_id: 11155111
+      name: "sepolia"
+      rpc_url: "https://eth-sepolia.g.alchemy.com/v2/YOUR_KEY"
+      explorer: "https://sepolia.etherscan.io"
+
+da:
+  provider: "local-fs"
+  local_fs:
+    storage_path: "./data/da"
+
+webhooks:
+  enabled: false
+
+integrations:
+  telegram:
+    enabled: false
+  discord:
+    enabled: false
+
+auth:
+  type: "bearer"
+  bearer:
+    tokens:
+      "11155111:0x0000000000000000000000000000000000000000:1": "local-dev-token"
+
+logging:
+  level: "debug"
+  format: "text"
+  output: "stdout"
+
+monitoring:
+  metrics:
+    enabled: true
+  health_check:
+    enabled: true

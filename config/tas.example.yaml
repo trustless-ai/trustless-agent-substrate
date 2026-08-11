@@ -1,0 +1,114 @@
+# TAS Configuration
+
+# Server
+server:
+  host: "0.0.0.0"
+  port: 8080
+  mcp_base_path: "/"  # MCP routes: /{chainId}/{registry}/agents/{agentId}/mcp
+
+# NATS JetStream
+messaging:
+  nats:
+    url: "nats://localhost:4222"
+    # For production: use cluster
+    # servers:
+    #   - "nats://nats1.example.com:4222"
+    #   - "nats://nats2.example.com:4222"
+    #   - "nats://nats3.example.com:4222"
+
+    stream:
+      name: "TAS_MESSAGES"
+      storage: "file"  # or "memory"
+      retention: "limits"  # keep acknowledged messages for diagnostic window
+      max_age: "168h"  # 7 days
+      max_msgs: 1000000
+      max_bytes: "10GB"
+
+    consumer:
+      ack_wait: "30s"
+      max_deliver: 3
+
+# Blockchain
+chain:
+  # Support multiple chains
+  networks:
+    - chain_id: 1
+      name: "ethereum-mainnet"
+      rpc_url: "https://eth-mainnet.g.alchemy.com/v2/YOUR_KEY"
+      explorer: "https://etherscan.io"
+
+    - chain_id: 11155111
+      name: "sepolia"
+      rpc_url: "https://eth-sepolia.g.alchemy.com/v2/YOUR_KEY"
+      explorer: "https://sepolia.etherscan.io"
+
+  # ERC contracts (agent-ercs)
+  contracts:
+    identity_registry:
+      # Sepolia testnet
+      11155111: "0x0000000000000000000000000000000000000000"  # Update with deployed address
+
+    workflow_registry:
+      11155111: "0x0000000000000000000000000000000000000000"  # Update with deployed address
+
+# Data Availability
+da:
+  provider: "local-fs"  # or "ipfs", "arweave", "celestia"
+
+  local_fs:
+    storage_path: "./data/da"
+
+  # ipfs:
+  #   gateway: "https://ipfs.io"
+  #   api_endpoint: "http://localhost:5001"
+
+  # arweave:
+  #   gateway: "https://arweave.net"
+  #   wallet_path: "./arweave-wallet.json"
+
+# Webhooks (optional)
+webhooks:
+  enabled: false
+  # When enabled, TAS will POST to registered webhook URLs
+  # Agents poll messages.receive without webhooks
+
+# Integrations
+integrations:
+  telegram:
+    enabled: false
+    bot_token: ""
+    # Groups to monitor
+    groups: []
+
+  discord:
+    enabled: false
+    bot_token: ""
+    # Channels to monitor
+    channels: []
+
+# Authorization (TBD - v0.1 uses simple bearer tokens)
+auth:
+  type: "bearer"  # or "signature", "siwe", "delegated"
+
+  # Simple bearer tokens for v0.1
+  bearer:
+    tokens:
+      # Agent identity -> token
+      "11155111:0x0000000000000000000000000000000000000000:1": "dev-token-agent-1"
+
+# Logging
+logging:
+  level: "info"  # debug, info, warn, error
+  format: "json"  # or "text"
+  output: "stdout"  # or file path
+
+# Monitoring
+monitoring:
+  metrics:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+
+  health_check:
+    enabled: true
+    path: "/health"
