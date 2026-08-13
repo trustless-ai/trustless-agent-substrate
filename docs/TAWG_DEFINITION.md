@@ -327,6 +327,32 @@ A successful `IAgentVerifier` result does not imply that:
 
 Correctness or acceptance may require stage-specific verification, deterministic recomputation, reviewer judgment, a challenge workflow, or another verifier.
 
+### 6.7.1 Example: three independent, composable checks
+
+A concrete illustration of the boundary above, using constructs discussed in the working group. None of the three substitutes for or is implied by either of the others — each answers a genuinely independent question, not a different angle on the same one:
+
+```text
+Content attribution  — "Is this the exact action that was claimed?"
+  e.g. action_ref = SHA-256(JCS({action_type, agent_id, scope, timestamp})),
+  where timestamp is an RFC 3339 UTC string with 3-digit millisecond
+  precision (e.g. "2026-05-15T10:00:00.123Z"), matching action-ref-v1.
+  Implementations holding epoch-ms integers MUST convert to that string
+  before hashing; hashing timestamp_ms directly is not conformant.
+  Anchored on a permissionless registry contract. Independently
+  recomputable without trusting the agent, the operator, or the
+  anchor issuer.
+
+Identity attribution — "Was this output attributable to this Agent?"
+  IAgentVerifier (§6.6).
+
+Correctness/authority — "Was there real, independent authority behind
+  calling the attributed action correct?"
+  e.g. a field carrying an authority_basis, an evidence_ref, and a
+  registry_snapshot hash pinned at issue time.
+```
+
+`action_ref` does not know or care who the agent is. `IAgentVerifier` does not know or care what the action was. The correctness/authority check is the only one of the three that asks whether calling the output correct had real authority behind it — neither of the other two touches that question at all. A TAWG stage MAY compose any subset of the three depending on its own risk, latency, and cost requirements; a pass on one is not evidence for either of the others.
+
 ### 6.8 Logical Profile getter capabilities
 
 The Profile contract MUST logically support:
