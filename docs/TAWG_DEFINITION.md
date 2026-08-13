@@ -333,9 +333,14 @@ A concrete illustration of the boundary above, using constructs discussed in the
 
 ```text
 Content attribution  — "Is this the exact action that was claimed?"
-  e.g. action_ref = SHA-256(JCS({agent_id, action_type, scope, timestamp_ms})),
-  anchored on a permissionless registry contract. Independently recomputable
-  without trusting the agent, the operator, or the anchor issuer.
+  e.g. action_ref = SHA-256(JCS({action_type, agent_id, scope, timestamp})),
+  where timestamp is an RFC 3339 UTC string with 3-digit millisecond
+  precision (e.g. "2026-05-15T10:00:00.123Z"), matching action-ref-v1.
+  Implementations holding epoch-ms integers MUST convert to that string
+  before hashing; hashing timestamp_ms directly is not conformant.
+  Anchored on a permissionless registry contract. Independently
+  recomputable without trusting the agent, the operator, or the
+  anchor issuer.
 
 Identity attribution — "Was this output attributable to this Agent?"
   IAgentVerifier (§6.6).
