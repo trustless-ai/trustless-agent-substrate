@@ -1,0 +1,56 @@
+{
+  "name": "@trustless-ai/tas",
+  "version": "0.1.0",
+  "description": "Trustless Agent Substrate host-neutral MCP process",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "tas": "dist/app/main.js"
+  },
+  "files": [
+    "dist",
+    "manifests",
+    "skills/tas/SKILL.md",
+    "skills/tawg-collaboration/SKILL.md",
+    "docs/tas/CREDENTIALS.md"
+  ],
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.tools.json",
+    "manifest:generate": "tsx tools/manifest/generate.ts",
+    "manifest:check": "tsx tools/manifest/generate.ts --check",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "start": "tsx src/app/main.ts",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/core": "2.0.0",
+    "@modelcontextprotocol/server": "2.0.0",
+    "@octokit/request": "10.0.14",
+    "@trustless-ai/agent-sdk": "0.3.0",
+    "discord.js": "14.27.0",
+    "grammy": "1.45.1",
+    "pino": "10.3.1",
+    "proper-lockfile": "4.1.2",
+    "smol-toml": "1.8.0",
+    "solc": "0.8.30",
+    "viem": "2.55.19",
+    "zod": "4.4.3"
+  },
+  "overrides": {
+    "tmp": "0.2.7"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3",
+    "@types/proper-lockfile": "4.1.4",
+    "@vitest/coverage-v8": "4.1.11",
+    "canonicalize": "4.0.0",
+    "tsx": "4.23.12",
+    "typescript": "7.0.2",
+    "vitest": "4.1.11"
+  }
+}

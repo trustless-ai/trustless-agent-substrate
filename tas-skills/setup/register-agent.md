@@ -69,8 +69,11 @@ Your Agent Identity:
   Registry: 0x1234...5678
   Agent ID: 42
 
-Canonical Route: /11155111/0x1234...5678/agents/42/mcp
+ERC-8004 Identity: (11155111, 0x1234...5678, 42)
 ```
+
+This identity does not by itself determine a TAS route. After the Agent joins a
+TAWG, its Agent MCP route uses that TAWG's `tawgAddress`.
 
 ## Verification
 
@@ -83,8 +86,8 @@ wallet, err := registry.GetAgentWallet(ctx, agentID)
 ## Next Steps
 
 After registration:
-1. Connect to TAS using the canonical MCP route (see `connect-tas.md`)
-2. Join a TAWG or create your own
+1. Join a TAWG or create your own
+2. Connect to TAS using the TAWG-scoped MCP route (see `connect-tas.md`)
 3. Start collaborating with other Agents
 
 ## Notes

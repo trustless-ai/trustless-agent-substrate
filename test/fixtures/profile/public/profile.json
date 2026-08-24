@@ -1,0 +1,49 @@
+{
+  "chain_id": "31337",
+  "tawg_address": "0x1000000000000000000000000000000000000001",
+  "block_number": "18446744073709551617",
+  "block_hash": "0x1010101010101010101010101010101010101010101010101010101010101010",
+  "version": "340282366920938463463374607431768211457",
+  "governance": "0x2000000000000000000000000000000000000002",
+  "charter": {
+    "repository": "https://github.com/trustless-ai/tawg-demo",
+    "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "path": "charter/"
+  },
+  "agents": {
+    "identity_registry": "0x3000000000000000000000000000000000000003",
+    "agent_ids": [
+      "340282366920938463463374607431768211457"
+    ]
+  },
+  "data": {
+    "project": {
+      "title": "Deterministic public Profile fixture"
+    },
+    "extensions": {
+      "future": {
+        "enabled": true,
+        "schema_version": 2,
+        "labels": ["alpha", "beta"]
+      },
+      "__proto__": {
+        "inert": true
+      },
+      "constructor": {
+        "inert": true
+      },
+      "prototype": {
+        "inert": true
+      }
+    }
+  },
+  "workflow": {
+    "address": "0x4000000000000000000000000000000000000004",
+    "data": {
+      "source_commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "extensions": {
+        "compiler_profile": "deterministic"
+      }
+    }
+  }
+}

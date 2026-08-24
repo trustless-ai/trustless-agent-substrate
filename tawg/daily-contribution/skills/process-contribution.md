@@ -1,7 +1,7 @@
 # Process Contribution Skill
 
 ## Purpose
-Process a validated contribution by creating a content-addressed artifact, storing it in DA, and anchoring the digest on-chain.
+Process a validated contribution by creating a content-addressed artifact, writing it to a TAWG-declared source, and committing its locator and digest on-chain.
 
 ## Trigger
 - Invoked by `handle-mention.md` after validation
@@ -73,11 +73,12 @@ const artifactBytes = Buffer.from(artifactJson, 'utf8')
 const contentHash = keccak256(artifactBytes)  // 0x1234...
 ```
 
-### 3. Store in DA
+### 3. Write to the declared data source
 ```javascript
-const daClient = await mcp.call('da.getClient')
-const cid = await daClient.put(artifactBytes)
-// Returns: bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi
+// The Agent Host owns this adapter and its write credentials. The allowed
+// source types and locator rules come from the TAWG Profile's Data domain.
+const source = await agentDataSources.forKey('evidence')
+const locator = await source.put(artifactBytes)
 ```
 
 ### 4. Prepare on-chain record

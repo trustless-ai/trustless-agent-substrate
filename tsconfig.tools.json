@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist-tools"
+  },
+  "include": [
+    "tools/**/*.ts"
+  ],
+  "exclude": [
+    "dist",
+    "dist-tools",
+    "node_modules"
+  ]
+}

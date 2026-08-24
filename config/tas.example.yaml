@@ -4,7 +4,7 @@
 server:
   host: "0.0.0.0"
   port: 8080
-  mcp_base_path: "/"  # MCP routes: /{chainId}/{registry}/agents/{agentId}/mcp
+  mcp_base_path: "/"  # Agent MCP: /{chainId}/{tawgAddress}/agents/{agentId}/mcp
 
 # NATS JetStream
 messaging:
@@ -42,18 +42,15 @@ chain:
       rpc_url: "https://eth-sepolia.g.alchemy.com/v2/YOUR_KEY"
       explorer: "https://sepolia.etherscan.io"
 
-  # ERC contracts (agent-ercs)
-  contracts:
-    identity_registry:
-      # Sepolia testnet
-      11155111: "0x0000000000000000000000000000000000000000"  # Update with deployed address
+  # TAWG Profile addresses arrive in request routes. Each Profile resolves its
+  # own ERC-8004 Identity Registry and ERC-8301 workflow; TAS does not maintain
+  # a second authoritative contract map here.
 
-    workflow_registry:
-      11155111: "0x0000000000000000000000000000000000000000"  # Update with deployed address
-
-# Data Availability
-da:
-  provider: "local-fs"  # or "ipfs", "arweave", "celestia"
+# External-data read adapter used by the current verification prototype.
+# Production source selection comes from the TAWG Profile; Agent writes and
+# write credentials remain outside TAS.
+data:
+  default_read_adapter: "local-fs"
 
   local_fs:
     storage_path: "./data/da"
@@ -93,7 +90,7 @@ auth:
   # Simple bearer tokens for v0.1
   bearer:
     tokens:
-      # Agent identity -> token
+      # Local-only key format: chainId:tawgAddress:agentId -> token
       "11155111:0x0000000000000000000000000000000000000000:1": "dev-token-agent-1"
 
 # Logging

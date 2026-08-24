@@ -1,0 +1,111 @@
+{
+  "profile": {
+    "chain_id": "31337",
+    "tawg_address": "0x1000000000000000000000000000000000000001",
+    "governance": "0x2000000000000000000000000000000000000002",
+    "identity_registry": "0x3000000000000000000000000000000000000003",
+    "workflow_address": "0x4000000000000000000000000000000000000004",
+    "repository_url": "https://github.com/trustless-ai/tawg-demo",
+    "initial": {
+      "block_number": "42",
+      "block_hash": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "version": "7",
+      "charter_commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    "advanced": {
+      "block_number": "43",
+      "block_hash": "0xdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "version": "8",
+      "charter_commit": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+    }
+  },
+  "activity": {
+    "since": "2026-08-23T01:00:00Z",
+    "observed_at": "2026-08-23T03:00:00Z",
+    "advanced_clock": "2026-08-23T04:00:00Z",
+    "issues_and_pull_requests": [
+      {
+        "kind": "issue",
+        "node_id": "I_kwDOFutureOpaque",
+        "provider_number": 2147483644,
+        "expected_number": "2147483644",
+        "title": "After the first observation window",
+        "state": "open",
+        "author": "future-agent",
+        "created_at": "2026-08-23T03:30:00Z",
+        "updated_at": "2026-08-23T03:30:00Z",
+        "url": "https://github.com/trustless-ai/tawg-demo/issues/2147483644"
+      },
+      {
+        "kind": "issue",
+        "node_id": "I_kwDONewestOpaque",
+        "provider_number": 2147483647,
+        "expected_number": "2147483647",
+        "title": "Newest contribution proposal",
+        "state": "open",
+        "author": "alice",
+        "created_at": "2026-08-23T02:30:00Z",
+        "updated_at": "2026-08-23T02:45:00Z",
+        "url": "https://github.com/trustless-ai/tawg-demo/issues/2147483647"
+      },
+      {
+        "kind": "pull_request",
+        "node_id": "PR_kwDOReviewOpaque",
+        "provider_number": 2147483646,
+        "expected_number": "2147483646",
+        "title": "Implement contribution flow",
+        "state": "closed",
+        "author": "bob",
+        "created_at": "2026-08-23T02:00:00Z",
+        "updated_at": "2026-08-23T02:20:00Z",
+        "url": "https://github.com/trustless-ai/tawg-demo/pull/2147483646"
+      },
+      {
+        "kind": "issue",
+        "node_id": "I_kwDOBoundaryOpaque",
+        "provider_number": 2147483645,
+        "expected_number": "2147483645",
+        "title": "Inclusive boundary proposal",
+        "state": "closed",
+        "author": null,
+        "created_at": "2026-08-23T01:00:00Z",
+        "updated_at": "2026-08-23T01:30:00Z",
+        "url": "https://github.com/trustless-ai/tawg-demo/issues/2147483645"
+      }
+    ],
+    "commits": [
+      {
+        "commit": "cccccccccccccccccccccccccccccccccccccccc",
+        "message": "Implement contribution flow",
+        "author_name": "Alice",
+        "author_login": "alice",
+        "committed_at": "2026-08-23T02:45:00Z",
+        "url": "https://github.com/trustless-ai/tawg-demo/commit/cccccccccccccccccccccccccccccccccccccccc"
+      },
+      {
+        "commit": "dddddddddddddddddddddddddddddddddddddddd",
+        "message": "Anchor the inclusive boundary",
+        "author_name": null,
+        "author_login": null,
+        "committed_at": "2026-08-23T01:00:00Z",
+        "url": "https://github.com/trustless-ai/tawg-demo/commit/dddddddddddddddddddddddddddddddddddddddd"
+      }
+    ]
+  },
+  "skills": {
+    "initial_head": "ffffffffffffffffffffffffffffffffffffffff",
+    "advanced_head": "1111111111111111111111111111111111111111",
+    "root": {
+      "path": "skills/SKILL.md",
+      "sha256": "9b14eca1a7c2df5c8657a9c243f42a8c208b62df02dcf0d5aa1467e2acbc81c3"
+    },
+    "contributor": {
+      "path": "skills/roles/contributor.md",
+      "sha256": "7ff1661092103bc782959f30a29bb1e18a01a59df126a8ed84a56705790cf954"
+    },
+    "evaluator": {
+      "path": "skills/roles/evaluator.md",
+      "sha256": "5e34defe49ff5bc3b5bad1a8ed133a55fab0b23a1d7cf3f0a254030e8319e736"
+    }
+  }
+}

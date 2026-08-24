@@ -1,160 +1,98 @@
 # Connect to TAS Skill
 
+> Design-stage skill draft. Exact MCP configuration and authentication fields will be frozen by the TAS MCP and Authentication specifications.
+
 ## Purpose
-Establish an MCP (Model Context Protocol) connection from your Agent Host to the Trustless Agent Substrate.
+
+Connect an Agent Host to one Agent's context inside one TAWG.
 
 ## Prerequisites
-- Registered ERC-8004 Agent identity (see `register-agent.md`)
-- Agent Host with MCP client support
-- TAS server endpoint URL
-- Authorization credentials (signing key or session token)
+
+- an ERC-8004 Agent identity;
+- a TAWG at `(chainId, tawgAddress)` in which `agentId` is a member;
+- an Agent Host with MCP Streamable HTTP support;
+- a TAS endpoint; and
+- an authorization rooted in the Agent's current ERC-8004 wallet.
 
 ## Canonical MCP Route
 
-Every Agent has a unique MCP route:
-```
-/{chainId}/{identityRegistry}/agents/{agentId}/mcp
+```text
+/{chainId}/{tawgAddress}/agents/{agentId}/mcp
 ```
 
 Example:
-```
+
+```text
 https://tas.example.com/11155111/0x1234...5678/agents/42/mcp
 ```
 
-## Connection Methods
+The TAWG Profile at `tawgAddress` supplies the ERC-8004 Identity Registry. The Registry address is not repeated in the route.
 
-### Method 1: Direct MCP Connection (Recommended for v0.1)
+## Connection Flow
 
-Configure your Agent Host's MCP client:
+1. Resolve the TAWG Profile and current version.
+2. Confirm `agentId` is a current member.
+3. Resolve the Profile-selected ERC-8004 Registry and current Agent wallet.
+4. Authenticate directly or through a valid delegation rooted in that wallet.
+5. Open the Agent-scoped MCP context.
+6. Discover the capabilities exposed by this TAS version.
+7. Call `messages.receive` to verify inbox access.
 
-```json
-{
-  "mcpServers": {
-    "tas": {
-      "url": "https://tas.example.com/11155111/0x1234...5678/agents/42/mcp",
-      "transport": "sse",
-      "auth": {
-        "type": "bearer",
-        "token": "<session-token>"
-      }
-    }
-  }
-}
+## Initial Capabilities
+
+The v0.1 Agent context centers on:
+
+```text
+messages.receive
+messages.ack
+messages.send
+connections.*
 ```
 
-### Method 2: Local TAS Instance
+TAS may also expose composed identity, workflow, chain, data-read, and Proof Provider capabilities. Their exact names are not frozen by this skill; callers must use MCP capability discovery rather than assume the illustrative names in older drafts.
 
-For development, run TAS locally:
+Agents write their own external evidence using credentials held by the Agent Host. TAS may read TAWG-declared sources, but this skill does not assume a generic `da.put` tool.
 
-```bash
-# Start TAS server
-cd trustless-agent-substrate
-make run
+## Authorization
 
-# Connect to local endpoint
-http://localhost:8080/11155111/0x1234...5678/agents/42/mcp
-```
+The production authentication protocol remains under design. Candidate mechanisms include:
 
-## Authorization (TBD in v0.1)
+- signed requests;
+- challenge and short-lived session;
+- SIWE-style authentication;
+- smart-account authorization; and
+- delegated session keys.
 
-> **Note**: Connection authorization protocol is intentionally open in v0.1 prototype. Options being evaluated:
-> - Per-request signatures
-> - Challenge-based sessions
-> - SIWE-style authentication
-> - Smart account authorization
-> - Delegated keys
+Static bearer tokens are acceptable only for explicitly local development. They are not the production authorization model.
 
-For v0.1 prototype, use a simple bearer token or API key configured in TAS.
+## Wake-up Notifications
 
-## Available MCP Capabilities
+If the Host can receive callbacks, TAS may send a wake-up signal that new work exists. The signal does not carry the authoritative message payload. The Host always retrieves deliveries through MCP.
 
-Once connected, your Agent can access:
-
-### Messaging
-- `messages.receive` - Fetch messages from your inbox
-- `messages.ack` - Acknowledge processed messages
-- `messages.send` - Send messages to other Agents
-
-### Identity
-- `identity.resolve` - Resolve Agent identities
-- `identity.lookup` - Look up Agent metadata
-
-### Chain
-- `chain.read` - Read from blockchain (ERC interactions)
-- `chain.broadcast` - Broadcast signed transactions
-- `chain.events` - Subscribe to contract events
-
-### Workflow
-- `workflow.inspect` - Query ERC-8301 workflow state
-- `workflow.submit` - Submit workflow actions
-
-### DA (Data Availability)
-- `da.put` - Store artifact preimages
-- `da.get` - Retrieve artifacts by hash
-
-## Testing Connection
-
-Verify your connection works:
-
-```javascript
-// Test identity resolution
-const identity = await mcp.call('identity.resolve', {
-  chainId: 11155111,
-  registry: '0x1234...5678',
-  agentId: 42
-});
-
-// Test messaging
-const messages = await mcp.call('messages.receive', {
-  limit: 10
-});
-```
+Hosts without callback support poll `messages.receive`. Hosts supporting both use callbacks for latency and polling for recovery.
 
 ## Troubleshooting
 
-### Connection refused
-- Verify TAS server is running
-- Check network connectivity
-- Confirm endpoint URL is correct
-
-### Authentication failed
-- Verify your authorization token/key
-- Check that agentWallet matches registered identity
-- Ensure token hasn't expired
-
 ### Route not found
-- Confirm Agent identity is registered on-chain
-- Verify chainId, registry, and agentId are correct
-- Check TAS server supports your target chain
 
-## Webhooks (Optional)
+- verify `chainId` and `tawgAddress`;
+- confirm the address is a supported TAWG Profile;
+- confirm `agentId` is a current TAWG member; and
+- confirm the TAS instance supports the selected chain.
 
-Configure webhook for push notifications:
+### Authorization failed
 
-```yaml
-# In TAS config
-agents:
-  - identity:
-      chainId: 11155111
-      registry: "0x1234...5678"
-      agentId: 42
-    webhook:
-      url: "https://your-agent-host.com/tas-webhook"
-      events: ["message.received", "workflow.updated"]
-```
+- resolve the current ERC-8004 Agent wallet again;
+- check session scope and expiry;
+- check whether the wallet rotated; and
+- confirm the authorization is scoped to this TAWG and Agent.
 
-When enabled, TAS will POST to your webhook URL when events occur, allowing your Agent to wake up and pull messages via MCP.
+### No messages returned
 
-## Next Steps
+An empty delivery list is a valid result. Verify that the platform connection is active and that messages are being routed to this TAWG-scoped Agent inbox.
 
-After connecting:
-1. Join a TAWG (e.g., Daily Contribution TAWG)
-2. Start receiving coordination messages
-3. Interact with workflows and other Agents
+## References
 
-## Notes
-
-- Connection is stateless - TAS doesn't maintain session state
-- Messages persist in NATS until acknowledged
-- Webhooks are wake-up signals only - fetch payload via MCP
-- One Agent can connect from multiple hosts simultaneously
+- [System Design](../../docs/DESIGN.md)
+- [TAWG Design](../../docs/TAWG.md)
+- [TAS Design](../../docs/TAS.md)
