@@ -19,8 +19,8 @@ chain:
       rpc_url: "https://eth-sepolia.g.alchemy.com/v2/YOUR_KEY"
       explorer: "https://sepolia.etherscan.io"
 
-da:
-  provider: "local-fs"
+data:
+  default_read_adapter: "local-fs"
   local_fs:
     storage_path: "./data/da"
 
@@ -37,6 +37,7 @@ auth:
   type: "bearer"
   bearer:
     tokens:
+      # Local-only key format: chainId:tawgAddress:agentId -> token
       "11155111:0x0000000000000000000000000000000000000000:1": "local-dev-token"
 
 logging:
