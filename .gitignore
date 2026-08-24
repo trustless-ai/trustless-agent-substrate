@@ -1,5 +1,8 @@
 # Binaries
 bin/
+node_modules/
+dist/
+coverage/
 *.exe
 *.dll
 *.so
@@ -48,3 +51,5 @@ Thumbs.db
 # Temporary
 tmp/
 temp/
+.worktrees/
+.tas-e2e/
