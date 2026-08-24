@@ -1,0 +1,10 @@
+config_version = 1
+mode = "identity_setup"
+
+[identity_setup]
+chain_id = "31337"
+identity_registry_address = "0x8004000000000000000000000000000000000001"
+
+[chain]
+family = "evm"
+rpc_url_env = "TAS_RPC_URL"

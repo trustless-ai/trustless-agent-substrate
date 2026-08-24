@@ -1,0 +1,10 @@
+config_version = 1
+mode = "tawg_setup"
+
+[tawg_setup]
+chain_id = "31337"
+tawg_address = "0x8004000000000000000000000000000000000002"
+
+[chain]
+family = "evm"
+rpc_url = "https://rpc.example.test"
