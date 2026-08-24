@@ -1,0 +1,346 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TAWG Collaboration public acceptance record",
+  "description": "A closed test record containing public evidence identifiers and human acceptance results. It is not a Collaboration Message format.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "run_id",
+    "started_at",
+    "completed_at",
+    "tawg_address",
+    "agents",
+    "rounds",
+    "checks",
+    "accepted_by_human"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "tawg_address": {
+      "description": "Public address of the local acceptance TAWG.",
+      "type": "string",
+      "pattern": "^0x(?!0{40}$)[0-9a-fA-F]{40}$"
+    },
+    "agents": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "required": ["label"],
+            "properties": { "label": { "const": "Agent A" } }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": ["label"],
+            "properties": { "label": { "const": "Agent B" } }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": ["label"],
+            "properties": { "label": { "const": "Agent C" } }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      ],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "label",
+          "erc8004_agent_id",
+          "role_skill_sources"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "enum": [
+              "Agent A",
+              "Agent B",
+              "Agent C"
+            ]
+          },
+          "erc8004_agent_id": {
+            "description": "Public canonical decimal ERC-8004 identity identifier.",
+            "type": "string",
+            "maxLength": 78,
+            "pattern": "^(?:0|[1-9][0-9]*)$"
+          },
+          "role_skill_sources": {
+            "description": "Public source metadata returned by separate role.get calls.",
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "kind",
+                "repository_url",
+                "commit",
+                "path",
+                "content_digest"
+              ],
+              "properties": {
+                "kind": {
+                  "const": "repository"
+                },
+                "repository_url": {
+                  "type": "string",
+                  "pattern": "^https://github\\.com/[A-Za-z0-9-]+/[A-Za-z0-9._-]+$"
+                },
+                "commit": {
+                  "type": "string",
+                  "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"
+                },
+                "path": {
+                  "type": "string",
+                  "pattern": "^skills/roles/[a-z][a-z0-9_-]{0,63}\\.md$"
+                },
+                "content_digest": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "algorithm",
+                    "value"
+                  ],
+                  "properties": {
+                    "algorithm": {
+                      "const": "sha256"
+                    },
+                    "value": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "rounds": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "round",
+          "scenario_ids",
+          "approvals",
+          "message_ids",
+          "commits",
+          "transaction_hashes",
+          "restart_boundaries"
+        ],
+        "properties": {
+          "round": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "scenario_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "l0-discussion",
+                "l2-open-opportunity",
+                "l3-direct-request",
+                "human-idea-explicit-start",
+                "agent-idea-unrelated-auto",
+                "incoming-handoff",
+                "uncovered-action",
+                "uncovered-outgoing-message",
+                "bounded-automatic-message",
+                "l5-recheck",
+                "restart-recovery",
+                "duplicate-notification",
+                "superseded-work",
+                "multiple-roles"
+              ]
+            }
+          },
+          "approvals": {
+            "description": "Public approval decisions without prompt text or private conversation content.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "approval_id",
+                "scenario_id",
+                "agent_label",
+                "kind",
+                "decision",
+                "decided_at"
+              ],
+              "properties": {
+                "approval_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "scenario_id": {
+                  "type": "string",
+                  "enum": [
+                    "l3-direct-request",
+                    "human-idea-explicit-start",
+                    "agent-idea-unrelated-auto",
+                    "incoming-handoff",
+                    "uncovered-action",
+                    "uncovered-outgoing-message",
+                    "l5-recheck"
+                  ]
+                },
+                "agent_label": {
+                  "type": "string",
+                  "enum": [
+                    "Agent A",
+                    "Agent B",
+                    "Agent C"
+                  ]
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "action",
+                    "message"
+                  ]
+                },
+                "decision": {
+                  "type": "string",
+                  "enum": [
+                    "approved",
+                    "rejected"
+                  ]
+                },
+                "decided_at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          },
+          "message_ids": {
+            "description": "Public SHA-256 references to simulator-issued message identifiers; never raw message content or credentials.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^message:[0-9a-f]{64}$"
+            }
+          },
+          "commits": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"
+            }
+          },
+          "transaction_hashes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^0x[0-9a-fA-F]{64}$"
+            }
+          },
+          "restart_boundaries": {
+            "description": "Public markers showing where an Agent process stopped and resumed.",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "boundary_id",
+                "agent_label",
+                "resumed_from_message_id"
+              ],
+              "properties": {
+                "boundary_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "agent_label": {
+                  "type": "string",
+                  "enum": [
+                    "Agent A",
+                    "Agent B",
+                    "Agent C"
+                  ]
+                },
+                "resumed_from_message_id": {
+                  "type": "string",
+                  "pattern": "^message:[0-9a-f]{64}$"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "passed",
+          "note"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "action-approval-gates",
+              "authoritative-rechecks",
+              "bounded-automation",
+              "independent-agent-state",
+              "later-round-isolation",
+              "message-approval-gates",
+              "natural-language-collaboration",
+              "rejected-approval-no-effect",
+              "restart-and-deduplication"
+            ]
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "note": {
+            "description": "A controlled public note code, never free text or private message content.",
+            "type": "string",
+            "const": "public-note:observed"
+          }
+        }
+      }
+    },
+    "accepted_by_human": {
+      "type": "boolean"
+    }
+  }
+}

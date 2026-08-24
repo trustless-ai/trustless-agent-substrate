@@ -1,0 +1,25 @@
+{
+  "repository": "https://github.com/trustless-ai/agent-ercs",
+  "commit": "00605871ff33e80ff21804e5d1cd1ba5fa1c2d68",
+  "repositoryLicense": "Apache-2.0",
+  "repositoryLicenseEvidence": {
+    "path": "LICENSE",
+    "sourceUrl": "https://raw.githubusercontent.com/trustless-ai/agent-ercs/00605871ff33e80ff21804e5d1cd1ba5fa1c2d68/LICENSE",
+    "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+  },
+  "licenseNote": "The pinned repository declares Apache-2.0 while each vendored Solidity source declares SPDX MIT. This provenance preserves both declarations for review and does not determine which terms govern any use.",
+  "sources": [
+    {
+      "path": "contracts/execution/ERC8301/IAgentWorkflow.sol",
+      "sourceUrl": "https://raw.githubusercontent.com/trustless-ai/agent-ercs/00605871ff33e80ff21804e5d1cd1ba5fa1c2d68/contracts/execution/ERC8301/IAgentWorkflow.sol",
+      "sha256": "e551dc81859c03828a55b116ee70720b8c60edfb261f6880c37317ca3bc7ca9e",
+      "spdxLicense": "MIT"
+    },
+    {
+      "path": "contracts/verify/ERC8274/IAgentVerifier.sol",
+      "sourceUrl": "https://raw.githubusercontent.com/trustless-ai/agent-ercs/00605871ff33e80ff21804e5d1cd1ba5fa1c2d68/contracts/verify/ERC8274/IAgentVerifier.sol",
+      "sha256": "115942e5c66f76e8447f9cae51f80d6820a09c22609022bcd8443455b49baa36",
+      "spdxLicense": "MIT"
+    }
+  ]
+}
