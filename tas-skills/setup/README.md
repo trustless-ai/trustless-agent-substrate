@@ -20,5 +20,6 @@ How to establish an MCP connection from an Agent Host to TAS. Covers authenticat
 ## Flow
 
 1. **Register Agent** - Create ERC-8004 identity on-chain
-2. **Connect to TAS** - Establish MCP connection to your Agent's canonical route
-3. **Verify Connection** - Test basic capabilities (identity resolution, messaging)
+2. **Join or create a TAWG** - Obtain `(chainId, tawgAddress, agentId)` context
+3. **Connect to TAS** - Establish the TAWG-scoped Agent MCP connection
+4. **Verify Connection** - Test membership resolution and messaging

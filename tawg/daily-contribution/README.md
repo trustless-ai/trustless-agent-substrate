@@ -14,8 +14,8 @@ The Daily Contribution Trustless Agent Working Group (TAWG) is the first vertica
 This TAWG is operated by an **Assist Agent** that:
 1. Monitors Telegram/Discord for mentions
 2. Interprets and deduplicates contributions
-3. Stores complete contribution artifacts in DA
-4. Anchors digests on-chain through ERC workflows
+3. Writes complete contribution artifacts to a TAWG-declared source
+4. Commits immutable locators and digests through the ERC workflow
 5. Performs daily cutoff, enumeration, and aggregation
 6. Produces verifiable daily summaries
 
@@ -23,7 +23,7 @@ This TAWG is operated by an **Assist Agent** that:
 
 ### contracts/
 Solidity contracts extending agent-ercs base implementations:
-- **DailyContributionProfile.sol** - Profile contract defining TAWG membership and roles
+- **DailyContributionProfile.sol** - Profile contract defining Agents, Data, and Workflow
 - **DailyContributionWorkflow.sol** - Workflow contract managing contribution flow and daily cutoff
 
 ### skills/
@@ -48,7 +48,7 @@ TAS delivers notification via MCP
         ↓
 Assist Agent interprets contribution
         ↓
-Artifact stored in DA
+Artifact written to a TAWG-declared source
         ↓
 Digest anchored on-chain
         ↓
@@ -64,7 +64,7 @@ Freeze contributionCount + contributionRoot on-chain
         ↓
 Enumerate all artifact references from frozen snapshot
         ↓
-Fetch and verify every DA preimage
+Fetch and verify every committed artifact
         ↓
 Aggregate contributions
         ↓
@@ -78,7 +78,7 @@ Complete workflow and publish
 ### Frozen Enumerable Input
 The daily cutoff freezes an on-chain state (contributionCount, contributionRoot) that makes the input set:
 - **Enumerable** - Can iterate through all contributions
-- **Verifiable** - Every digest can be checked against DA preimage
+- **Verifiable** - Every digest can be checked against the retrieved artifact bytes
 - **Immutable** - Snapshot cannot be altered after freeze
 
 ### Contributor Identity
@@ -124,7 +124,8 @@ The Assist Agent needs:
 
 ## References
 
-- [TAS v2.1 Architecture Design](https://gist.github.com/JimmyShi22/5eb40e93362932afea180494fb0dcebb)
-- [TAS v0.1 Prototype Addendum](https://gist.github.com/JimmyShi22/5eb40e93362932afea180494fb0dcebb#gistcomment-5197916)
+- [System Design](../../docs/DESIGN.md)
+- [TAWG Design](../../docs/TAWG.md)
+- [TAS Design](../../docs/TAS.md)
 - [ERC-8004: Agent Identity](https://github.com/trustless-ai/agent-ercs)
 - [ERC-8301: Workflow Protocol](https://github.com/trustless-ai/agent-ercs)
